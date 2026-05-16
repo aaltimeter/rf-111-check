@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SHOW ME THE MONEY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(180deg,#07111f,#0b1628); color:#f8fafc; padding:12px; margin:0; }
+    .header-wrap { position:relative; text-align:left; }
+    h1 { margin:0; font-size:28px; letter-spacing:1px; text-shadow:-1px 0 #0078d2,1px 0 #c8102e,0 0 14px rgba(255,255,255,.18); }
+    .reset-button { position:absolute; right:0; top:50%; transform:translateY(-50%); background:#26364f; color:#f8fafc; border:1px solid #415779; border-radius:12px; padding:8px 10px; font-size:11px; font-weight:bold; }
+    .subtitle { text-align:left; color:#a7b4c8; margin:4px 0 14px; font-size:14px; }
+    .card { background:linear-gradient(180deg,#182235,#111827); padding:14px; border-radius:18px; margin-bottom:12px; border:1px solid rgba(120,144,171,.35); box-shadow:0 8px 24px rgba(0,0,0,.35); }
+    .section-title { margin:8px 0; color:#e2e8f0; font-size:15px; font-weight:bold; }
+    .top-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:10px; }
+    .button-group,.three-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px; }
+    .two-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:10px; }
+    .five-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:12px; }
+    .choice-button,.selector-toggle,.ot-button,.details-toggle { background:#26364f; color:#f8fafc; border:1px solid #415779; border-radius:14px; font-weight:bold; }
+    .choice-button { padding:12px 8px; font-size:15px; }
+    .small-button { padding:10px 0; font-size:14px; }
+    .selector-toggle,.ot-button { width:100%; padding:12px 8px; font-size:15px; text-align:left; margin-bottom:10px; }
+ .top-grid .selector-toggle {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.top-grid .selector-toggle span {
+  margin-left: auto;
+}
+.stacked-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 68px;
+  text-align: center;
+}
+
+.stacked-button div:first-child {
+  font-size: 13px;
+  color: #a7b4c8;
+  margin-bottom: 2px;
+}
+
+.stacked-button div:last-child {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f8fafc;
+}
+#primaryLabel,
+#secondaryLabel {
+  width: 100%;
+  text-align: center;
+}
+    .selector-toggle span,.ot-button span { float:right; color:#a7b4c8; }
+    .choice-button.selected { background:linear-gradient(135deg,#0078d2,#1e90ff); border-color:#4fb3ff; box-shadow:0 0 12px rgba(0,120,210,.55); }
+    .choice-button.disabled { opacity:.42; }
+    .choice-button.addon-selected,.ot-button.selected,.selector-toggle.selected { background:linear-gradient(135deg,#c8102e,#e31b3f); border-color:#ff6b7f; box-shadow:0 0 12px rgba(200,16,46,.45); }
+    .ecb-row { display:grid; grid-template-columns:1fr 76px; gap:12px; align-items:center; margin-bottom:8px; }
+    input[type="range"] { width:100%; accent-color:#0078d2; }
+    .ecb-number { background:#26364f; color:#f8fafc; border:1px solid #415779; border-radius:14px; padding:12px; font-size:18px; font-weight:bold; text-align:center; width:100%; box-sizing:border-box; }
+    .result-summary { display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:center; margin-bottom:10px; }
+    .total-box { color:#4ade80; font-size:22px; font-weight:bold; }
+    .annual-box { text-align:right; color:#e2e8f0; font-size:15px; }
+    .details-toggle { width:100%; padding:10px; font-size:14px; margin-top:6px; }
+    .result-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #334155; font-size:15px; }
+    .small { color:#a7b4c8; font-size:12px; margin-top:12px; }
+    .hidden { display:none !important; }
+  </style>
+</head>
+
+<body>
+
+  <div class="header-wrap">
+    <h1>PAFCA AAL</h1>
+    <button class="reset-button" onclick="resetCalculator()">RESET</button>
+  </div>
+
+  <div class="subtitle">RF 111 CHECK</div>
+
+  <div class="card">
+    <div class="top-grid">
+      <button class="selector-toggle" onclick="togglePicker('yosPicker')">YOS <span id="selectedYosLabel">1 ▼</span></button>
+<button class="selector-toggle stacked-button" onclick="togglePicker('primaryPicker')">
+  <div>Primary</div>
+  <div id="primaryLabel">Dom ▼</div>
+</button>
+<button class="selector-toggle stacked-button" onclick="togglePicker('secondaryPicker')">
+  <div>Secondary</div>
+  <div id="secondaryLabel">NA ▼</div>
+</button>
+</div>
+
+    <div class="five-grid hidden" id="yosPicker"></div>
+
+    <div class="three-grid hidden" id="primaryPicker">
+      <button class="choice-button" id="primaryOpt-domestic" onclick="selectPrimary('domestic')">Dom</button>
+      <button class="choice-button" id="primaryOpt-international" onclick="selectPrimary('international')">Intl</button>
+      <button class="choice-button" id="primaryOpt-select" onclick="selectPrimary('select')">Select</button>
+    </div>
+
+    <div class="three-grid hidden" id="secondaryPicker">
+      <button class="choice-button" id="secondaryOpt-none" onclick="selectSecondary('none')">NA</button>
+      <button class="choice-button" id="secondaryOpt-international" onclick="selectSecondary('international')">Intl</button>
+      <button class="choice-button" id="secondaryOpt-select" onclick="selectSecondary('select')">Select</button>
+    </div>
+
+    <div class="section-title">Add-On Premiums</div>
+    <div class="button-group">
+      <button class="choice-button" id="addon-liaison" onclick="toggleAddon('liaison')">Liaison</button>
+      <button class="choice-button" id="addon-ats" onclick="toggleAddon('ats')">ATS</button>
+      <button class="choice-button" id="addon-il" onclick="toggleAddon('il')">IL</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="two-grid">
+      <button class="selector-toggle" onclick="togglePicker('shift1759Picker')">1200-1759 <span id="shift1759Label">0 ▼</span></button>
+      <button class="selector-toggle" onclick="togglePicker('shift0559Picker')">1800-0559 <span id="shift0559Label">0 ▼</span></button>
+    </div>
+    <div class="three-grid hidden" id="shift1759Picker"></div>
+    <div class="three-grid hidden" id="shift0559Picker"></div>
+
+    <div class="two-grid">
+      <button class="selector-toggle" onclick="togglePicker('intlUpgradePicker')">Intl Move <span id="intlUpgradeLabel">0 ▼</span></button>
+      <button class="selector-toggle" onclick="togglePicker('selectUpgradePicker')">Select Move <span id="selectUpgradeLabel">0 ▼</span></button>
+    </div>
+    <div class="three-grid hidden" id="intlUpgradePicker"></div>
+    <div class="three-grid hidden" id="selectUpgradePicker"></div>
+
+    <div class="two-grid">
+      <button class="selector-toggle" onclick="togglePicker('doubleTimePicker')" id="doubleTimeButton">Double Time <span id="doubleTimeLabel">0 ▼</span></button>
+      <button class="ot-button" id="otButton" onclick="toggleOvertime()">OT <span id="overtimeLabel">0</span></button>
+    </div>
+    <div class="three-grid hidden" id="doubleTimePicker"></div>
+
+    <div class="two-grid">
+      <button class="ot-button" id="holidayButton" onclick="toggleHoliday()">Holiday Off</button>
+      <button class="ot-button" id="holidayWorkedButton" onclick="toggleHolidayWorked()">Holiday Worked</button>
+    </div>
+
+    <div class="section-title">ECB</div>
+    <div class="ecb-row">
+      <input id="ecbSlider" type="range" min="0" max="144" step="1" value="0" oninput="updateEcbFromSlider()">
+      <input id="ecbHoursInput" class="ecb-number" type="number" min="0" max="144" step="1" value="0" oninput="updateEcbFromInput()">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="result-summary">
+      <div class="total-box"><div>Total Pay</div><div id="totalPay"></div></div>
+      <div class="annual-box"><div>Annualized</div><div id="annualPay"></div></div>
+    </div>
+
+    <button class="details-toggle" onclick="togglePicker('detailsBox')">Details ▼</button>
+
+    <div id="detailsBox" class="hidden">
+      <div class="result-row" id="row-basePay"><span>Base Pay</span><span id="basePay"></span></div>
+      <div class="result-row" id="row-licensePremium"><span>License Premium</span><span id="licensePremium"></span></div>
+      <div class="result-row" id="row-primaryPremium"><span>Primary Qualification</span><span id="primaryPremium"></span></div>
+      <div class="result-row" id="row-secondaryPremium"><span>Secondary Qualification</span><span id="secondaryPremium"></span></div>
+      <div class="result-row" id="row-liaisonPremium"><span>Liaison</span><span id="liaisonPremium"></span></div>
+      <div class="result-row" id="row-atsPremium"><span>ATS</span><span id="atsPremium"></span></div>
+      <div class="result-row" id="row-ilPremium"><span>IL</span><span id="ilPremium"></span></div>
+      <div class="result-row" id="row-shiftDiff"><span>Shift Differential</span><span id="shiftDiff"></span></div>
+      <div class="result-row" id="row-intlUpgrade"><span>Intl Move</span><span id="intlUpgrade"></span></div>
+      <div class="result-row" id="row-selectUpgrade"><span>Select Move</span><span id="selectUpgrade"></span></div>
+      <div class="result-row" id="row-doubleTime"><span>Double Time</span><span id="doubleTime"></span></div>
+      <div class="result-row" id="row-overtime"><span>Overtime</span><span id="overtime"></span></div>
+      <div class="result-row" id="row-holiday"><span>Holiday Off</span><span id="holidayPay"></span></div>
+      <div class="result-row" id="row-holidayWorked"><span>Holiday Worked</span><span id="holidayWorkedPay"></span></div>
+      <div class="result-row" id="row-ecb"><span>ECB</span><span id="ecbPay"></span></div>
+    </div>
+
+    <p class="small">OT/DT/Holiday/ECB rate is based on YOS + primary + secondary only.</p>
+  </div>
+
+  <script>
+    const annualScheduledHours = 1797;
+    const payPeriods = 26;
+    const biweeklyScheduledHours = annualScheduledHours / payPeriods;
+
+    const payTable = {
+      1: 3504.98, 2: 3773.83, 3: 3950.82, 4: 4202.54, 5: 4403.93,
+      6: 4517.07, 7: 4749.60, 8: 4913.09, 9: 5287.83, 10: 5470.52,
+      11: 6135.91
+    };
+
+    const shiftDiffValues = [0,9,18,27,36,45,54,63,72,81,90,99,108,117,126,135,144,153,162,171,180,189,198,207,216];
+    const upgradeValues = [0,9,18,27,36,45,54,63,72,81,90,99,108,117,126,135,144];
+
+    let selectedYos = 1;
+    let primaryQualification = "domestic";
+    let secondaryQualification = "none";
+
+    let shift1759Hours = 0;
+    let shift0559Hours = 0;
+    let intlUpgradeHours = 0;
+    let selectUpgradeHours = 0;
+    let doubleTimeHours = 0;
+    let overtimeHours = 0;
+    let holidayHours = 0;
+    let holidayWorkedHours = 0;
+    let ecbHours = 0;
+
+    const addOns = { liaison:false, ats:false, il:false };
+
+    function money(amount) {
+      return "$" + amount.toFixed(2);
+    }
+
+    function monthlyToBiweekly(monthlyAmount) {
+      return monthlyAmount * 12 / payPeriods;
+    }
+
+    function getBasePay(yos) {
+      if (yos <= 11) return payTable[yos];
+      return payTable[11] + (yos - 11) * 0.25 * biweeklyScheduledHours;
+    }
+
+    function togglePicker(id) {
+      const element = document.getElementById(id);
+      if (element) element.classList.toggle("hidden");
+    }
+
+    function closePicker(id) {
+      const element = document.getElementById(id);
+      if (element) element.classList.add("hidden");
+    }
+
+    function buildButtonGrids() {
+      const yosPicker = document.getElementById("yosPicker");
+
+      if (yosPicker.children.length === 0) {
+        for (let i = 1; i <= 25; i++) {
+          yosPicker.innerHTML += `<button class="choice-button small-button" id="yos-${i}" onclick="selectYos(${i})">${i}</button>`;
+        }
+      }
+
+      buildHourGrid("shift1759Picker", "shift1759", shiftDiffValues);
+      buildHourGrid("shift0559Picker", "shift0559", shiftDiffValues);
+      buildHourGrid("intlUpgradePicker", "intlUpgrade", upgradeValues);
+      buildHourGrid("selectUpgradePicker", "selectUpgrade", upgradeValues);
+      buildHourGrid("doubleTimePicker", "doubleTime", upgradeValues);
+    }
+
+    function buildHourGrid(containerId, type, values) {
+      const container = document.getElementById(containerId);
+      if (!container || container.children.length > 0) return;
+
+      values.forEach(value => {
+        container.innerHTML += `<button class="choice-button small-button" id="${type}-${value}" onclick="selectHours('${type}', ${value})">${value}</button>`;
+      });
+    }
+
+    function selectYos(value) {
+      selectedYos = value;
+      closePicker("yosPicker");
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    function selectPrimary(value) {
+      primaryQualification = value;
+      closePicker("primaryPicker");
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    function selectSecondary(value) {
+      secondaryQualification = value;
+      closePicker("secondaryPicker");
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    function toggleAddon(name) {
+      addOns[name] = !addOns[name];
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    function toggleOvertime() {
+      overtimeHours = overtimeHours === 9 ? 0 : 9;
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    function toggleHoliday() {
+      holidayHours = holidayHours === 9 ? 0 : 9;
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    function toggleHolidayWorked() {
+      holidayWorkedHours = holidayWorkedHours === 13.5 ? 0 : 13.5;
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    function selectHours(type, hours) {
+      if (type === "shift1759") { shift1759Hours = hours; closePicker("shift1759Picker"); }
+      if (type === "shift0559") { shift0559Hours = hours; closePicker("shift0559Picker"); }
+      if (type === "intlUpgrade") { intlUpgradeHours = hours; closePicker("intlUpgradePicker"); }
+      if (type === "selectUpgrade") { selectUpgradeHours = hours; closePicker("selectUpgradePicker"); }
+      if (type === "doubleTime") { doubleTimeHours = hours; closePicker("doubleTimePicker"); }
+
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    function updateEcbFromSlider() {
+      ecbHours = Number(document.getElementById("ecbSlider").value);
+      document.getElementById("ecbHoursInput").value = ecbHours;
+      calculatePaycheck();
+    }
+
+    function updateEcbFromInput() {
+      let value = Number(document.getElementById("ecbHoursInput").value);
+      if (Number.isNaN(value)) value = 0;
+      if (value < 0) value = 0;
+      if (value > 144) value = 144;
+
+      ecbHours = value;
+      document.getElementById("ecbSlider").value = ecbHours;
+      document.getElementById("ecbHoursInput").value = ecbHours;
+      calculatePaycheck();
+    }
+
+    function updateButtonGroup(options, selectedValue, prefix) {
+      options.forEach(option => {
+        const button = document.getElementById(prefix + "-" + option);
+        if (!button) return;
+
+        button.classList.remove("selected", "disabled");
+
+        if (selectedValue === option) button.classList.add("selected");
+        else button.classList.add("disabled");
+      });
+    }
+
+    function updateHourButtons(type, selectedValue, values) {
+      values.forEach(value => {
+        const button = document.getElementById(type + "-" + value);
+        if (!button) return;
+
+        button.classList.remove("selected", "disabled");
+
+        if (selectedValue === value) button.classList.add("selected");
+        else button.classList.add("disabled");
+      });
+    }
+
+    function updateButtons() {
+      document.getElementById("selectedYosLabel").innerHTML = selectedYos + " ▼";
+      document.getElementById("primaryLabel").innerHTML =
+        (primaryQualification === "domestic" ? "Dom" : primaryQualification === "international" ? "Intl" : "Select") + " ▼";
+      document.getElementById("secondaryLabel").innerHTML =
+        (secondaryQualification === "none" ? "NA" : secondaryQualification === "international" ? "Intl" : "Select") + " ▼";
+
+      document.getElementById("shift1759Label").innerHTML = shift1759Hours + " ▼";
+      document.getElementById("shift0559Label").innerHTML = shift0559Hours + " ▼";
+      document.getElementById("intlUpgradeLabel").innerHTML = intlUpgradeHours + " ▼";
+      document.getElementById("selectUpgradeLabel").innerHTML = selectUpgradeHours + " ▼";
+      document.getElementById("doubleTimeLabel").innerHTML = doubleTimeHours + " ▼";
+      document.getElementById("overtimeLabel").innerHTML = overtimeHours;
+
+      for (let i = 1; i <= 25; i++) {
+        const button = document.getElementById("yos-" + i);
+        button.classList.remove("selected", "disabled");
+
+        if (selectedYos === i) button.classList.add("selected");
+        else button.classList.add("disabled");
+      }
+
+      updateButtonGroup(["domestic","international","select"], primaryQualification, "primaryOpt");
+      updateButtonGroup(["none","international","select"], secondaryQualification, "secondaryOpt");
+
+      ["liaison","ats","il"].forEach(option => {
+        const button = document.getElementById("addon-" + option);
+        button.classList.remove("addon-selected");
+        if (addOns[option]) button.classList.add("addon-selected");
+      });
+
+      document.getElementById("otButton").classList.toggle("selected", overtimeHours > 0);
+      document.getElementById("holidayButton").classList.toggle("selected", holidayHours > 0);
+      document.getElementById("holidayWorkedButton").classList.toggle("selected", holidayWorkedHours > 0);
+      document.getElementById("doubleTimeButton").classList.toggle("selected", doubleTimeHours > 0);
+
+      updateHourButtons("shift1759", shift1759Hours, shiftDiffValues);
+      updateHourButtons("shift0559", shift0559Hours, shiftDiffValues);
+      updateHourButtons("intlUpgrade", intlUpgradeHours, upgradeValues);
+      updateHourButtons("selectUpgrade", selectUpgradeHours, upgradeValues);
+      updateHourButtons("doubleTime", doubleTimeHours, upgradeValues);
+    }
+
+    function updateRowVisibility(rowId, amount) {
+      const row = document.getElementById(rowId);
+      if (!row) return;
+
+      if (amount <= 0) row.classList.add("hidden");
+      else row.classList.remove("hidden");
+    }
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) element.innerHTML = value;
+    }
+
+    function calculateQualificationPremiums(basePay) {
+      let primaryPremium = 0;
+      let secondaryPremium = 0;
+
+      if (primaryQualification === "international") primaryPremium = monthlyToBiweekly(400);
+      if (primaryQualification === "select") primaryPremium = basePay * 0.0725;
+      if (secondaryQualification === "international") secondaryPremium = monthlyToBiweekly(200);
+      if (secondaryQualification === "select") secondaryPremium = basePay * 0.035;
+
+      return { primaryPremium, secondaryPremium };
+    }
+
+    function calculatePaycheck() {
+      const basePay = getBasePay(selectedYos);
+      const baseHourly = basePay / biweeklyScheduledHours;
+
+      const quals = calculateQualificationPremiums(basePay);
+      const primaryPremium = quals.primaryPremium;
+      const secondaryPremium = quals.secondaryPremium;
+
+      const licensePremium = monthlyToBiweekly(370) + basePay * 0.045;
+      const liaisonPremium = addOns.liaison ? monthlyToBiweekly(400) : 0;
+      const atsPremium = addOns.ats ? monthlyToBiweekly(350) : 0;
+      const ilPremium = addOns.il ? basePay * 0.0725 : 0;
+
+      const shiftDiff = shift1759Hours * 0.51 + shift0559Hours * 0.58;
+
+      let intlUpgradePay = 0;
+
+      if (primaryQualification === "domestic" && secondaryQualification === "international") {
+        intlUpgradePay = intlUpgradeHours * (((400 - 200) * 12) / annualScheduledHours);
+      }
+
+      let selectUpgradePay = 0;
+
+      if (
+        (primaryQualification === "domestic" || primaryQualification === "international") &&
+        secondaryQualification === "select"
+      ) {
+        selectUpgradePay = selectUpgradeHours * baseHourly * 0.0375;
+      }
+
+      const eligibleBiweeklyPay = basePay + primaryPremium + secondaryPremium;
+      const eligibleHourly = eligibleBiweeklyPay / biweeklyScheduledHours;
+
+      const overtimePay = overtimeHours * eligibleHourly * 1.5;
+      const doubleTimePay = doubleTimeHours * eligibleHourly * 2;
+      const holidayPay = holidayHours * eligibleHourly;
+      const holidayWorkedPay = holidayWorkedHours * eligibleHourly;
+      const ecbPay = ecbHours * eligibleHourly;
+
+      const total =
+        basePay +
+        licensePremium +
+        primaryPremium +
+        secondaryPremium +
+        liaisonPremium +
+        atsPremium +
+        ilPremium +
+        shiftDiff +
+        intlUpgradePay +
+        selectUpgradePay +
+        overtimePay +
+        doubleTimePay +
+        holidayPay +
+        holidayWorkedPay +
+        ecbPay;
+
+      const annual = total * payPeriods;
+
+      setText("basePay", money(basePay));
+      setText("licensePremium", money(licensePremium));
+      setText("primaryPremium", money(primaryPremium));
+      setText("secondaryPremium", money(secondaryPremium));
+      setText("liaisonPremium", money(liaisonPremium));
+      setText("atsPremium", money(atsPremium));
+      setText("ilPremium", money(ilPremium));
+      setText("shiftDiff", money(shiftDiff));
+      setText("intlUpgrade", money(intlUpgradePay));
+      setText("selectUpgrade", money(selectUpgradePay));
+      setText("doubleTime", money(doubleTimePay));
+      setText("overtime", money(overtimePay));
+      setText("holidayPay", money(holidayPay));
+      setText("holidayWorkedPay", money(holidayWorkedPay));
+      setText("ecbPay", money(ecbPay));
+      setText("totalPay", money(total));
+      setText("annualPay", money(annual));
+
+      updateRowVisibility("row-basePay", basePay);
+      updateRowVisibility("row-licensePremium", licensePremium);
+      updateRowVisibility("row-primaryPremium", primaryPremium);
+      updateRowVisibility("row-secondaryPremium", secondaryPremium);
+      updateRowVisibility("row-liaisonPremium", liaisonPremium);
+      updateRowVisibility("row-atsPremium", atsPremium);
+      updateRowVisibility("row-ilPremium", ilPremium);
+      updateRowVisibility("row-shiftDiff", shiftDiff);
+      updateRowVisibility("row-intlUpgrade", intlUpgradePay);
+      updateRowVisibility("row-selectUpgrade", selectUpgradePay);
+      updateRowVisibility("row-doubleTime", doubleTimePay);
+      updateRowVisibility("row-overtime", overtimePay);
+      updateRowVisibility("row-holiday", holidayPay);
+      updateRowVisibility("row-holidayWorked", holidayWorkedPay);
+      updateRowVisibility("row-ecb", ecbPay);
+    }
+
+    function resetCalculator() {
+      selectedYos = 1;
+      primaryQualification = "domestic";
+      secondaryQualification = "none";
+      shift1759Hours = 0;
+      shift0559Hours = 0;
+      intlUpgradeHours = 0;
+      selectUpgradeHours = 0;
+      doubleTimeHours = 0;
+      overtimeHours = 0;
+      holidayHours = 0;
+      holidayWorkedHours = 0;
+      ecbHours = 0;
+
+      addOns.liaison = false;
+      addOns.ats = false;
+      addOns.il = false;
+
+      document.getElementById("ecbSlider").value = 0;
+      document.getElementById("ecbHoursInput").value = 0;
+
+      closePicker("yosPicker");
+      closePicker("primaryPicker");
+      closePicker("secondaryPicker");
+      closePicker("shift1759Picker");
+      closePicker("shift0559Picker");
+      closePicker("intlUpgradePicker");
+      closePicker("selectUpgradePicker");
+      closePicker("doubleTimePicker");
+      closePicker("detailsBox");
+
+      updateButtons();
+      calculatePaycheck();
+    }
+
+    buildButtonGrids();
+    updateButtons();
+    calculatePaycheck();
+  </script>
+
+</body>
+</html>
