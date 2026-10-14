@@ -42,7 +42,7 @@ const num=id=>Number($(id).value)||0;
 const monthToPeriod=n=>n*12/PERIODS;
 function fill(id,values){$(id).innerHTML=values.map(n=>`<option value="${n}">${n}</option>`).join('');}
 fill('dispatch',Array.from({length:11},(_,i)=>i+1));
-fill('company',Array.from({length:26},(_,i)=>i));
+fill('company',Array.from({length:23},(_,i)=>i));
 for(const id of ['shiftDay','shiftNight'])fill(id,Array.from({length:25},(_,i)=>i*9));
 for(const id of ['moveIntl','moveSelect','dt','ot'])fill(id,Array.from({length:17},(_,i)=>i*9));
 const toggles=['liaison','holidayOff','holidayWorked'];
