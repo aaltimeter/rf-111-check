@@ -1,634 +1,106 @@
-
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b1628">
-<title>PAFCA AAL | RF 111 Check</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1628"><title>PAFCA AAL | RF 111 Check</title>
 <style>
-:root {
-  color-scheme: dark;
-  --bg: #0b1628;
-  --card: #172338;
-  --line: #3b4d69;
-  --muted: #acb9ce;
-  --blue: #1688e9;
-  --red: #c8102e;
-  --green: #4ade80;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: linear-gradient(180deg,#07111f,var(--bg));
-  color: #f8fafc;
-  font: 15px system-ui,-apple-system,Segoe UI,Arial,sans-serif;
-}
-main { max-width:780px; margin:auto; padding:14px; }
-header {
-  display:flex; align-items:center; justify-content:space-between;
-  gap:12px; margin-bottom:12px;
-}
-h1 {
-  font-size:26px; letter-spacing:1px; margin:0;
-  text-shadow:-1px 0 var(--blue),1px 0 var(--red);
-}
-.sub { color:var(--muted); font-size:13px; margin-top:3px; }
-.card {
-  background:linear-gradient(180deg,#1b2940,#111b2c);
-  border:1px solid #384961;
-  border-radius:17px;
-  padding:14px; margin-bottom:12px;
-  box-shadow:0 8px 22px #0004;
-}
-h2 { font-size:15px; margin:2px 0 12px; }
-.grid {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-}
-.field { display:block; min-width:0; }
-.field span {
-  display:block; font-size:12px;
-  color:var(--muted); margin-bottom:5px;
-}
-select,input[type=number],button { font:inherit; }
-select,input[type=number] {
-  width:100%; min-width:0; padding:12px 8px;
-  background:#26364f; color:white;
-  border:1px solid #536784; border-radius:11px;
-}
-button {
-  background:#26364f; color:white;
-  border:1px solid #536784; border-radius:11px;
-  padding:11px 8px; font-weight:700; cursor:pointer;
-}
-button:focus-visible,select:focus-visible,input:focus-visible {
-  outline:2px solid #58b6ff; outline-offset:2px;
-}
-.toggle.on {
-  background:linear-gradient(135deg,#b60d2a,#e12849);
-  border-color:#ff7890;
-}
-.smallbtn { font-size:12px; padding:8px 11px; }
-.full { width:100%; }
-.stack { margin-top:12px; }
-.checkline {
-  display:flex; gap:8px; align-items:center; flex-wrap:wrap;
-}
-.checkline button { flex:1; min-width:72px; }
-.hint {
-  color:var(--muted); font-size:12px;
-  line-height:1.45; margin:9px 0 0;
-}
-.ecb {
-  display:grid; grid-template-columns:1fr 80px;
-  align-items:center; gap:12px;
-}
-input[type=range] { width:100%; accent-color:var(--blue); }
-.summary {
-  display:flex; align-items:end;
-  justify-content:space-between; gap:12px;
-}
-.amount {
-  font-size:clamp(22px,5vw,32px);
-  font-weight:800; color:var(--green);
-}
-.annual { text-align:right; font-size:19px; font-weight:700; }
-.muted { font-size:12px; color:var(--muted); }
-details { margin-top:12px; }
-summary {
-  cursor:pointer; padding:10px; text-align:center;
-  background:#26364f; border:1px solid #536784;
-  border-radius:11px; font-weight:700;
-}
-.line {
-  display:flex; justify-content:space-between;
-  gap:12px; padding:9px 1px;
-  border-bottom:1px solid #34435a;
-}
-.line span:last-child {
-  white-space:nowrap; font-variant-numeric:tabular-nums;
-}
-.warning { border-left:3px solid #fbbf24; padding-left:10px; }
-.foot {
-  margin:14px 0; color:var(--muted);
-  font-size:12px; line-height:1.5;
-}
-@media(max-width:420px) {
-  main { padding:10px; }
-  .card { padding:12px; }
-  .grid { gap:8px; }
-  select { font-size:14px; padding:11px 5px; }
-  .annual { font-size:16px; }
-}
+:root{color-scheme:dark;--bg:#0b1628;--card:#172338;--line:#3b4d69;--muted:#acb9ce;--blue:#1688e9;--red:#c8102e;--green:#4ade80}*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#07111f,var(--bg));color:#f8fafc;font:15px system-ui,-apple-system,Segoe UI,Arial,sans-serif}main{max-width:780px;margin:auto;padding:14px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}h1{font-size:26px;letter-spacing:1px;margin:0;text-shadow:-1px 0 var(--blue),1px 0 var(--red)}.sub{color:var(--muted);font-size:13px;margin-top:3px}.card{background:linear-gradient(180deg,#1b2940,#111b2c);border:1px solid #384961;border-radius:17px;padding:14px;margin-bottom:12px;box-shadow:0 8px 22px #0004}h2{font-size:15px;margin:2px 0 12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.field{display:block;min-width:0}.field span{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}select,input[type=number],button{font:inherit}select,input[type=number]{width:100%;min-width:0;padding:12px 8px;background:#26364f;color:white;border:1px solid #536784;border-radius:11px}button{background:#26364f;color:white;border:1px solid #536784;border-radius:11px;padding:11px 8px;font-weight:700;cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #58b6ff;outline-offset:2px}.toggle.on{background:linear-gradient(135deg,#b60d2a,#e12849);border-color:#ff7890}.smallbtn{font-size:12px;padding:8px 11px}.full{width:100%}.stack{margin-top:12px}.checkline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.checkline button{flex:1;min-width:72px}.hint{color:var(--muted);font-size:12px;line-height:1.45;margin:9px 0 0}.ecb{display:grid;grid-template-columns:1fr 80px;align-items:center;gap:12px}input[type=range]{width:100%;accent-color:var(--blue)}.summary{display:flex;align-items:end;justify-content:space-between;gap:12px}.amount{font-size:clamp(22px,5vw,32px);font-weight:800;color:var(--green)}.annual{text-align:right;font-size:19px;font-weight:700}.muted{font-size:12px;color:var(--muted)}details{margin-top:12px}summary{cursor:pointer;padding:10px;text-align:center;background:#26364f;border:1px solid #536784;border-radius:11px;font-weight:700}.line{display:flex;justify-content:space-between;gap:12px;padding:9px 1px;border-bottom:1px solid #34435a}.line span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}.warning{border-left:3px solid #fbbf24;padding-left:10px}.foot{margin:14px 0;color:var(--muted);font-size:12px;line-height:1.5}@media(max-width:420px){main{padding:10px}.card{padding:12px}.grid{gap:8px}select{font-size:14px;padding:11px 5px}.annual{font-size:16px}}
 </style>
 </head>
-<body>
-<main>
-
-<header>
-  <div>
-    <h1>PAFCA AAL</h1>
-    <div class="sub">RF 111 CHECK · TA Paycheck Estimator</div>
-  </div>
-  <button class="smallbtn" id="reset">RESET</button>
-</header>
-
-<section class="card">
-  <h2>Qualifications &amp; Seniority</h2>
-  <div class="grid">
-    <label class="field">
-      <span>Dispatch YOS</span>
-      <select id="dispatch"></select>
-    </label>
-    <label class="field">
-      <span>Company YOS</span>
-      <select id="company"></select>
-    </label>
-    <label class="field">
-      <span>Primary</span>
-      <select id="primary">
-        <option value="domestic">Domestic</option>
-        <option value="international">International</option>
-        <option value="select">Select</option>
-      </select>
-    </label>
-    <label class="field">
-      <span>Secondary</span>
-      <select id="secondary">
-        <option value="none">NA</option>
-        <option value="international">International</option>
-        <option value="select">Select</option>
-        <option value="ats">ATS</option>
-        <option value="il">IL</option>
-      </select>
-    </label>
-    <label class="field">
-      <span>Ops FAM (editable)</span>
-      <select id="fam">
-        <option value="domestic">Domestic — 3%</option>
-        <option value="international">International — 4%</option>
-        <option value="select">Select — 8%</option>
-      </select>
-    </label>
-    <label class="field">
-      <span>Add-on</span>
-      <select id="addon">
-        <option value="none">NA</option>
-        <option value="ats">ATS — 5%</option>
-        <option value="il">IL — 7.5%</option>
-      </select>
-    </label>
-  </div>
-  <div class="stack">
-    <button id="liaison" class="toggle full" aria-pressed="false">
-      Liaison · $350/mo
-    </button>
-  </div>
-  <p class="hint">
-    Ops FAM initially follows Primary. You can override it manually;
-    changing Primary resets Ops FAM to the new Primary.
-  </p>
-</section>
-
-<section class="card">
-  <h2>Extra Pay</h2>
-  <div class="grid">
-    <label class="field">
-      <span>1100–1659 shift hours</span>
-      <select id="shiftDay"></select>
-    </label>
-    <label class="field">
-      <span>1700–0459 shift hours</span>
-      <select id="shiftNight"></select>
-    </label>
-    <label class="field">
-      <span>Intl Move hours</span>
-      <select id="moveIntl"></select>
-    </label>
-    <label class="field">
-      <span>Select Move hours</span>
-      <select id="moveSelect"></select>
-    </label>
-    <label class="field">
-      <span>Double Time hours</span>
-      <select id="dt"></select>
-    </label>
-    <label class="field">
-      <span>OT hours</span>
-      <select id="ot"></select>
-    </label>
-  </div>
-
-  <div class="checkline stack">
-    <button id="holidayOff" class="toggle" aria-pressed="false">
-      Holiday Off · 9h
-    </button>
-    <button id="holidayWorked" class="toggle" aria-pressed="false">
-      Holiday Worked · 13.5h
-    </button>
-  </div>
-
-  <h2 class="stack">ECB hours</h2>
-  <div class="ecb">
-    <input aria-label="ECB hours slider" id="ecbSlider"
-      type="range" min="0" max="144" value="0" step="1">
-    <input aria-label="ECB hours" id="ecb"
-      type="number" min="0" max="144" value="0" step="1">
-  </div>
-</section>
-
-<section class="card">
-  <div class="summary">
-    <div>
-      <div class="muted">Estimated Biweekly Gross</div>
-      <div class="amount" id="total">$0.00</div>
-    </div>
-    <div>
-      <div class="muted" style="text-align:right">
-        Annualized × 26
-      </div>
-      <div class="annual" id="annual">$0.00</div>
-    </div>
-  </div>
-  <details>
-    <summary>Paycheck Details ▼</summary>
-    <div id="breakdown"></div>
-    <p class="hint" id="rateInfo"></p>
-  </details>
-</section>
-
-<section class="card">
-  <h2>Calculation notes — verify before publishing</h2>
-  <p class="hint warning">
-    Longevity is provisionally calculated at $0.25 per company
-    year per hour (maximum 25 years). Confirm the exact service-credit
-    rule against the TA.
-  </p>
-  <p class="hint warning">
-    OT/DT uses salary plus 11.75% license percentage and
-    provisionally includes longevity. The $370 license flat amount
-    and qualification overrides are excluded. Holiday and ECB
-    use that same provisional hourly rate.
-  </p>
-  <p class="hint">
-    Shift differential: $2.12/hr for 1100–1659 and
-    $4.42/hr for 1700–0459. Liaison remains $350/month.
-    Move pay uses the 1.5%, 11.75%, and 8.25% rules.
-  </p>
-  <p class="hint">
-    Holiday Off and Holiday Worked count toward biweekly gross,
-    but are excluded from the annualized calculation.
-  </p>
-</section>
-
-<div class="foot">
-  Gross estimate only · Not an official payroll statement ·
-  Validate TA calculations before distribution.
-</div>
-
-</main>
-
-<script>
+<body><main>
+<header><div><h1>PAFCA AAL</h1><div class="sub">RF 111 CHECK · TA Paycheck Estimator</div></div><button class="smallbtn" id="reset">RESET</button></header>
+<section class="card"><h2>Qualifications &amp; Seniority</h2><div class="grid">
+<label class="field"><span>Dispatch YOS</span><select id="dispatch"></select></label>
+<label class="field"><span>Company YOS</span><select id="company"></select></label>
+<label class="field"><span>Primary</span><select id="primary"><option value="domestic">Domestic</option><option value="international">International</option><option value="select">Select</option></select></label>
+<label class="field"><span>Secondary</span><select id="secondary"><option value="none">NA</option><option value="international">International</option><option value="select">Select</option><option value="ats">ATS</option><option value="il">IL</option></select></label>
+<label class="field"><span>Ops FAM (editable)</span><select id="fam"><option value="domestic">Domestic — 3%</option><option value="international">International — 4%</option><option value="select">Select — 8%</option></select></label>
+<label class="field"><span>Add-on</span><select id="addon"><option value="none">NA</option><option value="ats">ATS — 5%</option><option value="il">IL — 7.5%</option></select></label>
+</div><div class="stack"><button id="liaison" class="toggle full" aria-pressed="false">Liaison · $350/mo</button></div><p class="hint">Ops FAM initially follows Primary. You can override it manually; changing Primary resets Ops FAM to the new Primary.</p></section>
+<section class="card"><h2>Extra Pay</h2><div class="grid">
+<label class="field"><span>1100–1659 shift hours</span><select id="shiftDay"></select></label>
+<label class="field"><span>1700–0459 shift hours</span><select id="shiftNight"></select></label>
+<label class="field"><span>Intl Move hours</span><select id="moveIntl"></select></label>
+<label class="field"><span>Select Move hours</span><select id="moveSelect"></select></label>
+<label class="field"><span>Double Time hours</span><select id="dt"></select></label>
+<label class="field"><span>OT hours</span><select id="ot"></select></label>
+</div><div class="checkline stack"><button id="holidayOff" class="toggle" aria-pressed="false">Holiday Off · 9h</button><button id="holidayWorked" class="toggle" aria-pressed="false">Holiday Worked · 13.5h</button></div><h2 class="stack">ECB hours</h2><div class="ecb"><input aria-label="ECB hours slider" id="ecbSlider" type="range" min="0" max="144" value="0" step="1"><input aria-label="ECB hours" id="ecb" type="number" min="0" max="144" value="0" step="1"></div></section>
+<section class="card"><div class="summary"><div><div class="muted">Estimated Biweekly Gross</div><div class="amount" id="total">$0.00</div></div><div><div class="muted" style="text-align:right">Annualized × 26</div><div class="annual" id="annual">$0.00</div></div></div><details><summary>Paycheck Details ▼</summary><div id="breakdown"></div><p class="hint" id="rateInfo"></p></details></section>
+<section class="card"><h2>Calculation notes — verify before publishing</h2><p class="hint warning">Longevity is provisionally calculated at $0.25 per company year per hour (maximum 22 years), matching the spreadsheet's approximately $411.88/month at year 11. The spreadsheet does not conclusively establish the exact service-credit rule or cap.</p><p class="hint warning">OT/DT uses the spreadsheet's stated hourly base of salary + 11.75% license, plus longevity provisionally. The $370 license amount, qualification overrides, OPS FAM, and shift differentials are excluded. Holiday/ECB use that same provisional hourly rate. Confirm these rules against TA contract language.</p><p class="hint">Shift differentials use the updated $2.12/$4.42 per hour rates. Liaison remains $400/month. Move pay differentials: Domestic to International 2%, Domestic to Select 4.75%, and International to Select 0.75%.</p><p class="hint">A home-screen shortcut installed as a standalone app may hide the browser toolbar. Open this page in a normal Safari/Chrome/Edge tab and bookmark it there for normal tab navigation; the webpage cannot force the browser's toolbar to appear.</p></section>
+<div class="foot">Gross estimate only · Not an official payroll statement · TA calculations should be validated before distribution.</div>
+</main><script>
 'use strict';
-
-// =====================================================
-// BASE SALARY AND PAY CONSTANTS
-// =====================================================
-
-const MONTHLY = [
-  0,
-  8540,
-  9197,
-  9628,
-  10240,
-  10732,
-  11005,
-  11573,
-  11970,
-  12885,
-  13328,
-  14950
-];
-
-const ANNUAL_HOURS = 1797;
-const MONTH_HOURS = ANNUAL_HOURS / 12;
-const PERIODS = 26;
-const PERIOD_HOURS = ANNUAL_HOURS / PERIODS;
-
-// =====================================================
-// QUALIFICATION OVERRIDES
-// =====================================================
-
-const PRIMARY = {
-  domestic: 0,
-  international: .04,
-  select: .0825
-};
-
-const SECONDARY = {
-  none: 0,
-  international: .02,
-  select: .035,
-  ats: .05,
-  il: .075
-};
-
-const ADDON = {
-  none: 0,
-  ats: .05,
-  il: .075
-};
-
-const FAM = {
-  domestic: .03,
-  international: .04,
-  select: .08
-};
-
-// =====================================================
-// HELPERS
-// =====================================================
-
-const $ = id => document.getElementById(id);
-
-const usd = n => new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD'
-}).format(n);
-
-const num = id => Number($(id).value) || 0;
-
-const monthToPeriod = n => n * 12 / PERIODS;
-
-function fill(id, values) {
-  const select = $(id);
-  select.replaceChildren();
-
-  for (const value of values) {
-    const option = document.createElement('option');
-    option.value = String(value);
-    option.textContent = String(value);
-    select.appendChild(option);
-  }
+const MONTHLY=[0,8540,9197,9628,10240,10732,11005,11573,11970,12885,13328,14950];
+const ANNUAL_HOURS=1797, MONTH_HOURS=ANNUAL_HOURS/12, PERIODS=26, PERIOD_HOURS=ANNUAL_HOURS/PERIODS;
+const PRIMARY={domestic:0,international:.04,select:.0825};
+const SECONDARY={none:0,international:.02,select:.035,ats:.05,il:.075};
+const ADDON={none:0,ats:.05,il:.075};
+const FAM={domestic:.03,international:.04,select:.08};
+const $=id=>document.getElementById(id);
+const usd=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n);
+const num=id=>Number($(id).value)||0;
+const monthToPeriod=n=>n*12/PERIODS;
+function fill(id,values){$(id).innerHTML=values.map(n=>`<option value="${n}">${n}</option>`).join('');}
+fill('dispatch',Array.from({length:11},(_,i)=>i+1));
+fill('company',Array.from({length:26},(_,i)=>i));
+for(const id of ['shiftDay','shiftNight'])fill(id,Array.from({length:25},(_,i)=>i*9));
+for(const id of ['moveIntl','moveSelect','dt','ot'])fill(id,Array.from({length:17},(_,i)=>i*9));
+const toggles=['liaison','holidayOff','holidayWorked'];
+function isOn(id){return $(id).getAttribute('aria-pressed')==='true';}
+function setOn(id,on){$(id).setAttribute('aria-pressed',String(on));$(id).classList.toggle('on',on);}
+for(const id of toggles)$(id).addEventListener('click',()=>{setOn(id,!isOn(id));calc();});
+$('primary').addEventListener('change',()=>{$('fam').value=$('primary').value;calc();});
+$('ecbSlider').addEventListener('input',()=>{$('ecb').value=$('ecbSlider').value;calc();});
+$('ecb').addEventListener('input',()=>{const v=Math.max(0,Math.min(144,num('ecb')));$('ecbSlider').value=v;calc();});
+$('ecb').addEventListener('change',()=>{$('ecb').value=Math.max(0,Math.min(144,num('ecb')));calc();});
+for(const el of document.querySelectorAll('select'))if(el.id!=='primary')el.addEventListener('change',calc);
+function addRow(rows,label,value){if(Math.abs(value)>.000001)rows.push([label,value]);}
+function calc(){
+ const dispatch=Math.min(11,num('dispatch')),company=Math.min(25,num('company'));
+ const monthly=MONTHLY[dispatch], base=monthToPeriod(monthly);
+ const longevityHourly=Math.min(company,22)*.25,longevity=longevityHourly*PERIOD_HOURS;
+ const licenseFlat=monthToPeriod(370),licensePercent=base*.1175;
+ const primary=base*PRIMARY[$('primary').value],secondary=base*SECONDARY[$('secondary').value];
+ const fam=base*FAM[$('fam').value],addon=base*ADDON[$('addon').value];
+ const liaison=isOn('liaison')?monthToPeriod(350):0;
+ const shiftDay=num('shiftDay')*2.12,shiftNight=num('shiftNight')*4.42;
+ const baseHourly=monthly/MONTH_HOURS;
+ // Move differential reflects premiums already earned in the current qualification.
+ let intlRate=0,selectRate=0;
+ if($('primary').value==='domestic') {
+   intlRate=PRIMARY.international-SECONDARY.international;
+   selectRate=PRIMARY.select-SECONDARY.select;
+ } else if($('primary').value==='international') {
+   selectRate=PRIMARY.select-(PRIMARY.international+SECONDARY.select);
+ }
+ const moveIntl=num('moveIntl')*baseHourly*intlRate;
+ const moveSelect=num('moveSelect')*baseHourly*selectRate;
+ // Spreadsheet OT hourly base: monthly salary + 11.75% license percentage, not $370 flat.
+ // OPS FAM and shift differentials are separate pay items, not included in OT/DT hourly rate.
+ // Longevity inclusion is provisional and clearly marked in UI.
+ const hourly=(monthly*1.1175)/MONTH_HOURS+longevityHourly;
+ const ot=num('ot')*hourly*1.5,dt=num('dt')*hourly*2;
+ const holidayOff=isOn('holidayOff')?9*hourly:0;
+ const holidayWorked=isOn('holidayWorked')?13.5*hourly:0;
+ const ecb=num('ecb')*hourly;
+ const rows=[];
+ addRow(rows,'Base salary',base);addRow(rows,'Company longevity',longevity);
+ addRow(rows,'License · $370 flat',licenseFlat);addRow(rows,'License · 11.75%',licensePercent);
+ addRow(rows,'Primary · '+$('primary').selectedOptions[0].text,primary);
+ addRow(rows,'Secondary · '+$('secondary').selectedOptions[0].text,secondary);
+ addRow(rows,'Ops FAM · '+$('fam').selectedOptions[0].text,fam);
+ addRow(rows,'Add-on · '+$('addon').selectedOptions[0].text,addon);
+ addRow(rows,'Liaison',liaison);addRow(rows,'Shift diff · 1100–1659',shiftDay);
+ addRow(rows,'Shift diff · 1700–0459',shiftNight);
+ addRow(rows,'International move',moveIntl);addRow(rows,'Select move',moveSelect);
+ addRow(rows,'OT · 1.5×',ot);addRow(rows,'Double time · 2×',dt);
+ addRow(rows,'Holiday off',holidayOff);addRow(rows,'Holiday worked',holidayWorked);addRow(rows,'ECB',ecb);
+ const total=rows.reduce((sum,row)=>sum+row[1],0);
+ $('total').textContent=usd(total);$('annual').textContent=usd((total-holidayWorked-holidayOff)*PERIODS);
+ $('breakdown').replaceChildren(...rows.map(([label,value])=>{const row=document.createElement('div');row.className='line';const a=document.createElement('span'),b=document.createElement('span');a.textContent=label;b.textContent=usd(value);row.append(a,b);return row;}));
+ $('rateInfo').textContent='Provisional premium-pay hourly rate: '+usd(hourly)+'/hr · Company longevity: '+usd(longevityHourly)+'/hr · 1,797 scheduled hours/year.';
 }
-
-// =====================================================
-// POPULATE ALL DROPDOWNS
-// =====================================================
-
-// Dispatch YOS: 1 through 11
-fill('dispatch',
-  Array.from({length:11}, (_,i) => i + 1)
-);
-
-// Company YOS: 0 through 25
-fill('company',
-  Array.from({length:26}, (_,i) => i)
-);
-
-// Shift differential hours: 0 through 216, by 9
-for (const id of ['shiftDay', 'shiftNight']) {
-  fill(id, Array.from({length:25}, (_,i) => i * 9));
-}
-
-// Move, OT and DT hours: 0 through 144, by 9
-for (const id of ['moveIntl', 'moveSelect', 'dt', 'ot']) {
-  fill(id, Array.from({length:17}, (_,i) => i * 9));
-}
-
-// =====================================================
-// BUTTONS AND EVENTS
-// =====================================================
-
-const toggles = ['liaison', 'holidayOff', 'holidayWorked'];
-
-function isOn(id) {
-  return $(id).getAttribute('aria-pressed') === 'true';
-}
-
-function setOn(id, on) {
-  $(id).setAttribute('aria-pressed', String(on));
-  $(id).classList.toggle('on', on);
-}
-
-for (const id of toggles) {
-  $(id).addEventListener('click', () => {
-    setOn(id, !isOn(id));
-    calc();
-  });
-}
-
-// Ops FAM follows Primary when Primary changes
-$('primary').addEventListener('change', () => {
-  $('fam').value = $('primary').value;
-  calc();
-});
-
-// ECB slider and numeric entry
-$('ecbSlider').addEventListener('input', () => {
-  $('ecb').value = $('ecbSlider').value;
-  calc();
-});
-
-$('ecb').addEventListener('input', () => {
-  const v = Math.max(0, Math.min(144, num('ecb')));
-  $('ecbSlider').value = v;
-  calc();
-});
-
-$('ecb').addEventListener('change', () => {
-  $('ecb').value = Math.max(0, Math.min(144, num('ecb')));
-  calc();
-});
-
-// Recalculate whenever any dropdown changes
-for (const select of document.querySelectorAll('select')) {
-  if (select.id !== 'primary') {
-    select.addEventListener('change', calc);
-  }
-}
-
-function addRow(rows, label, value) {
-  if (Math.abs(value) > .000001) {
-    rows.push([label, value]);
-  }
-}
-
-// =====================================================
-// MAIN PAYCHECK CALCULATION
-// =====================================================
-
-function calc() {
-
-  const dispatch = Math.min(11, num('dispatch'));
-  const company = Math.min(25, num('company'));
-
-  const monthly = MONTHLY[dispatch];
-  const base = monthToPeriod(monthly);
-
-  // Company longevity
-  const longevityHourly = company * .25;
-  const longevity = longevityHourly * PERIOD_HOURS;
-
-  // License premiums
-  const licenseFlat = monthToPeriod(370);
-  const licensePercent = base * .1175;
-
-  // Qualification premiums
-  const primary = base * PRIMARY[$('primary').value];
-  const secondary = base * SECONDARY[$('secondary').value];
-  const fam = base * FAM[$('fam').value];
-  const addon = base * ADDON[$('addon').value];
-
-  // Liaison
-  const liaison = isOn('liaison') ? monthToPeriod(350) : 0;
-
-  // NEW SHIFT DIFFERENTIAL RATES
-  const shiftDay = num('shiftDay') * 2.12;
-  const shiftNight = num('shiftNight') * 4.42;
-
-  // Move upgrades
-  const baseHourly = monthly / MONTH_HOURS;
-
-  let intlRate = 0;
-  let selectRate = 0;
-
-  if ($('primary').value === 'domestic') {
-    intlRate = .015;
-    selectRate = .1175;
-  } else if ($('primary').value === 'international') {
-    selectRate = .0825;
-  }
-
-  const moveIntl = num('moveIntl') * baseHourly * intlRate;
-  const moveSelect = num('moveSelect') * baseHourly * selectRate;
-
-  // Provisional premium-pay hourly rate
-  const hourly =
-    (monthly * 1.1175) / MONTH_HOURS + longevityHourly;
-
-  // Overtime and double time
-  const ot = num('ot') * hourly * 1.5;
-  const dt = num('dt') * hourly * 2;
-
-  // Holidays
-  const holidayOff = isOn('holidayOff') ? 9 * hourly : 0;
-  const holidayWorked = isOn('holidayWorked') ? 13.5 * hourly : 0;
-
-  // ECB
-  const ecb = num('ecb') * hourly;
-
-  // Paycheck details
-  const rows = [];
-
-  addRow(rows, 'Base salary', base);
-  addRow(rows, 'Company longevity', longevity);
-  addRow(rows, 'License · $370 flat', licenseFlat);
-  addRow(rows, 'License · 11.75%', licensePercent);
-
-  addRow(rows,
-    'Primary · ' + $('primary').selectedOptions[0].text,
-    primary
-  );
-
-  addRow(rows,
-    'Secondary · ' + $('secondary').selectedOptions[0].text,
-    secondary
-  );
-
-  addRow(rows,
-    'Ops FAM · ' + $('fam').selectedOptions[0].text,
-    fam
-  );
-
-  addRow(rows,
-    'Add-on · ' + $('addon').selectedOptions[0].text,
-    addon
-  );
-
-  addRow(rows, 'Liaison', liaison);
-  addRow(rows, 'Shift diff · 1100–1659', shiftDay);
-  addRow(rows, 'Shift diff · 1700–0459', shiftNight);
-  addRow(rows, 'International move', moveIntl);
-  addRow(rows, 'Select move', moveSelect);
-  addRow(rows, 'OT · 1.5×', ot);
-  addRow(rows, 'Double time · 2×', dt);
-  addRow(rows, 'Holiday off', holidayOff);
-  addRow(rows, 'Holiday worked', holidayWorked);
-  addRow(rows, 'ECB', ecb);
-
-  // Total biweekly gross
-  const total = rows.reduce((sum, row) => sum + row[1], 0);
-
-  // Annualized excludes both holiday payments
-  const annualized =
-    (total - holidayWorked - holidayOff) * PERIODS;
-
-  $('total').textContent = usd(total);
-  $('annual').textContent = usd(annualized);
-
-  // Render details
-  $('breakdown').replaceChildren(
-    ...rows.map(([label, value]) => {
-      const row = document.createElement('div');
-      row.className = 'line';
-
-      const a = document.createElement('span');
-      const b = document.createElement('span');
-
-      a.textContent = label;
-      b.textContent = usd(value);
-
-      row.append(a, b);
-      return row;
-    })
-  );
-
-  $('rateInfo').textContent =
-    'Provisional premium-pay hourly rate: ' +
-    usd(hourly) + '/hr · Company longevity: ' +
-    usd(longevityHourly) +
-    '/hr · 1,797 scheduled hours/year.';
-}
-
-// =====================================================
-// RESET
-// =====================================================
-
-function reset() {
-
-  for (const id of [
-    'dispatch', 'primary', 'secondary', 'fam', 'addon'
-  ]) {
-    $(id).selectedIndex = 0;
-  }
-
-  $('company').value = '0';
-
-  for (const id of [
-    'shiftDay', 'shiftNight',
-    'moveIntl', 'moveSelect', 'dt', 'ot'
-  ]) {
-    $(id).value = '0';
-  }
-
-  $('ecb').value = '0';
-  $('ecbSlider').value = '0';
-
-  for (const id of toggles) {
-    setOn(id, false);
-  }
-
-  calc();
-}
-
-$('reset').addEventListener('click', reset);
-
-// Initialize calculator
+function reset(){for(const id of ['dispatch','primary','secondary','fam','addon'])$(id).selectedIndex=0;$('company').value='0';for(const id of ['shiftDay','shiftNight','moveIntl','moveSelect','dt','ot'])$(id).value='0';$('ecb').value='0';$('ecbSlider').value='0';for(const id of toggles)setOn(id,false);calc();}
+$('reset').addEventListener('click',reset);
 reset();
-
-</script>
-</body>
-</html>
+</script></body></html>
